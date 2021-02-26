@@ -8,6 +8,8 @@ const changeState = (state = initialState, { type, ...rest }) => {
   switch (type) {
     case 'set':
       return {...state, ...rest }
+    case 'logIn':
+      return true
     default:
       return state
   }

@@ -48,6 +48,7 @@ const Banner = require('./Routes/Banner.route');
 const Images = require('./Routes/Images.route');
 const News = require('./Routes/News.route');
 const Videos = require('./Routes/Videos.route');
+const Admin = require('./Routes/admin.route');
 
   mongoose.connect(
    process.env.MONGODB_URI, {
@@ -62,7 +63,7 @@ const Videos = require('./Routes/Videos.route');
 // Initialize DB
 // require('./initDB')();
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "http://political.madymade.in:3000");
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
   res.header(
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-with, Control-Type, Accept, Authorization"
@@ -233,6 +234,7 @@ app.use('/banner',Banner);
 app.use('/images',Images);
 app.use('/videos',Videos);
 app.use('/news',News);
+app.use('/admin',Admin);
 
 //404 handler and pass to error handler
 app.use((req, res, next) => {

@@ -9,7 +9,8 @@ import {
   CHeaderNavLink,
   CSubheader,
   CBreadcrumbRouter,
-  CLink
+  CLink,
+  CButton
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 
@@ -37,6 +38,12 @@ const TheHeader = () => {
     dispatch({type: 'set', sidebarShow: val})
   }
 
+  const onLogout=()=>{
+    localStorage.removeItem('userId');
+    localStorage.removeItem('token');
+    window.location='/login';
+  }
+
   return (
     <CHeader withSubheader>
       <CToggler
@@ -56,7 +63,7 @@ const TheHeader = () => {
         <CIcon name="logo" height="48" alt="Logo"/>
       </CHeaderBrand> */}
 
-      <CHeaderNav className="d-md-down-none mr-auto">
+      <CHeaderNav className="d-md-down-none mr-auto" >
         <CHeaderNavItem className="px-3" >
           <CHeaderNavLink to="/dashboard">Dashboard</CHeaderNavLink>
         </CHeaderNavItem>
@@ -66,6 +73,17 @@ const TheHeader = () => {
         <CHeaderNavItem className="px-3">
           <CHeaderNavLink>Settings</CHeaderNavLink>
         </CHeaderNavItem> */}
+        <CLink className="c-subheader-nav-link" href="#" style={{    position: "absolute",
+    right: "20px"}}>
+              {/* <CIcon name="cil-settings" alt="Settings" />&nbsp;Settings */}
+              <CButton
+                          color="primary"
+                          onClick={() => onLogout()}
+                          className="px-4"
+                        >
+                          Log Out
+                        </CButton>
+            </CLink>
       </CHeaderNav>
 
       {/* <CHeaderNav className="px-3">
@@ -91,11 +109,10 @@ const TheHeader = () => {
             >
               <CIcon name="cil-graph" alt="Dashboard" />&nbsp;Dashboard
             </CLink>
-            <CLink className="c-subheader-nav-link" href="#">
-              <CIcon name="cil-settings" alt="Settings" />&nbsp;Settings
-            </CLink>
+            
           </div>
       </CSubheader> */}
+      
     </CHeader>
   )
 }

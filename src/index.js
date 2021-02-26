@@ -14,7 +14,7 @@ import store from './store'
 
 import axios from 'axios';
 
-axios.defaults.baseURL="http://political.madymade.in:1337/";
+axios.defaults.baseURL="http://localhost:5000/";
 
 React.icons = icons
 

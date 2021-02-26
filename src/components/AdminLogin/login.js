@@ -14,9 +14,9 @@ const UserLogin = () => {
     email: "",
   });
 
-  useEffect(() => {
-    if (custToken) window.location = "/";
-  }, [custToken]);
+  // useEffect(() => {
+  //   if (custToken) window.location = "/";
+  // }, [custToken]);
 
   // const inputEvent = (e) => {
   //   const { name, value } = e.target;
@@ -31,24 +31,24 @@ const UserLogin = () => {
 
   const onSubmit = (user) => {
     // e.preventDefault();
-    console.log(user); // sent object
-    axios
-      .post("/users/login", {
-        email: user.email,
-        password: user.password,
-      })
-      .then((response) => {
-        // console.log(response.data);
-        // console.log(response.data.token);
-        localStorage.setItem("token", response.data.token);
-        localStorage.setItem("userId", response.data.userId);
-        // setCustToken(response.data);
-        window.location = "/";
-      })
-      .catch((error) => {
-       alert("wrong email or password")
-        console.log(error);
-      });
+    // console.log(user); // sent object
+    // axios
+    //   .post("/users/login", {
+    //     email: user.email,
+    //     password: user.password,
+    //   })
+    //   .then((response) => {
+    //     // console.log(response.data);
+    //     // console.log(response.data.token);
+    //     localStorage.setItem("token", response.data.token);
+    //     localStorage.setItem("userId", response.data.userId);
+    //     // setCustToken(response.data);
+    //     window.location = "/";
+    //   })
+    //   .catch((error) => {
+    //    alert("wrong email or password")
+    //     console.log(error);
+    //   });
   };
 
   return (
