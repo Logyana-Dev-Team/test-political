@@ -4,6 +4,7 @@ import Modal from "react-modal";
 import axios from "axios";
 import EditForm from "./EditForm";
 import Images from "./Images";
+import { authAxiosAdmin } from "src/App";
 
 Modal.setAppElement("#root");
 

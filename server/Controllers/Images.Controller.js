@@ -4,8 +4,25 @@ const mongoose = require("mongoose");
 const Images = require("../Models/image.model");
 
 const fs = require("fs");
-
+const path = require("path");
 module.exports = {
+  deleteImages: async (images, mode) => {
+    var basePath = path.resolve(__dirname + "../../") + "/uploads/";
+    console.log(basePath);
+    let filePath = "";
+
+    filePath = basePath + images;
+    console.log(filePath);
+    if (fs.existsSync(filePath)) {
+      console.log("Exists image");
+    }
+    fs.unlink(filePath, (err) => {
+      if (err) {
+        return err;
+      }
+    });
+  },
+
   getAllImagess: async (req, res, next) => {
     try {
       const results = await Images.find({}).sort({ updatedAt: -1 });
@@ -16,20 +33,10 @@ module.exports = {
   },
 
   createNewImages: async (req, res, next) => {
-    const file = req.file;
-    if (!file) {
-      const error = new Error("Please choose file");
-      error.httpStatusCode = 400;
-      return next(error);
-    }
+    const {fileURL}=req.body;
 
-    let img = fs.readFileSync(file.path);
-
-    let encode_image = img.toString("base64");
     let finalImg = {
-      filename: file.originalname,
-      contentType: file.mimetype,
-      imageBase64: encode_image,
+      filename: fileURL,
     };
     const images = new Images(finalImg);
 
@@ -152,11 +159,12 @@ module.exports = {
     const id = req.params.id;
     try {
       const result = await Images.findByIdAndDelete(id);
-      // console.log(result);
+      console.log(result);
       if (!result) {
         throw createError(404, "Images does not exist.");
       }
-      res.send(result);
+      // if(result)
+      // this.deleteAImages(result.image)
     } catch (error) {
       console.log(error.message);
       if (error instanceof mongoose.CastError) {
@@ -166,5 +174,4 @@ module.exports = {
       next(error);
     }
   },
-
 };

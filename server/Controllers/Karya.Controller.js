@@ -5,6 +5,7 @@ const Karya = require("../Models/Karya.model");
 const imageSchema = require("../Models/image.model");
 
 const fs = require("fs");
+const { deleteImages } = require("./Images.Controller");
 
 module.exports = {
   getAllKaryas: async (req, res, next) => {
@@ -63,28 +64,36 @@ module.exports = {
       );
     };
     // sendMessage(req.body.title);
-    const files = req.files;
+    // const files = req.files;
 
-    if (!files) {
-      const error = new Error("Please choose files");
-      error.httpStatusCode = 400;
-      return next(error);
-    }
+    // if (!files) {
+    //   const error = new Error("Please choose files");
+    //   error.httpStatusCode = 400;
+    //   return next(error);
+    // }
 
     // convert images into base64 encoding
-    let imgArray = files.map((file) => {
-      let img = fs.readFileSync(file.path);
+    // let imgArray = files.map((file) => {
+    //   let img = fs.readFileSync(file.path);
 
-      return (encode_image = img.toString("base64"));
-    });
+    //   return (encode_image = img.toString("base64"));
+    // });
 
     let images = [];
-    let result = imgArray.map((src, index) => {
+    let videolink="";
+    if(req.body.action === "Video")
+    {
+    videolink=req.body.videolink
+}
+else {   
+    
+    const fileArray=req.body.fileArray;
+    // console.log(fileArray);
+
+    let result = fileArray.map((item) => {
       // create object to store data in the collection
       let finalImg = {
-        filename: files[index].originalname,
-        contentType: files[index].mimetype,
-        imageBase64: src,
+        filename: item.fileURL,
       };
       // console.log(finalImg);
       let newUpload = new imageSchema(finalImg);
@@ -92,27 +101,21 @@ module.exports = {
       images.push(newUpload);
     });
 
-    // Promise.all(result)
-    //   .then((msg) => {
-    //     // res.json(msg);
-    //     res.redirect("/");
-    //   })
-    //   .catch((err) => {
-    //     res.json(err);
-    //   });
-
+}
+// console.log(images);   
     const karya = new Karya({
       title: req.body.title,
       desc: req.body.desc,
       link: req.body.link,
       images: images,
+      videolink:videolink
     });
     karya
       .save()
       .then((result) => {
         // console.log(result);
         res.send(result);
-        sendMessage(result.title,result._id,result.desc,result.link,result.createdAt)
+        // sendMessage(result.title,result._id,result.desc,result.link,result.createdAt)
         console.log(result.title,result._id)
       })
       .catch((err) => {
@@ -181,21 +184,17 @@ module.exports = {
   },
   addAImage: async (req, res, next) => {
     const id = req.params.id;
-    const file = req.file;
+    const fileURL=req.body.fileURL
+    // const file = req.file;
 
-    if (!file) {
-      const error = new Error("Please choose file");
-      error.httpStatusCode = 400;
-      return next(error);
-    }
+    // if (!file) {
+    //   const error = new Error("Please choose file");
+    //   error.httpStatusCode = 400;
+    //   return next(error);
+    // }
 
-    let img = fs.readFileSync(file.path);
-
-    let encode_image = img.toString("base64");
     let finalImg = {
-      filename: file.originalname,
-      contentType: file.mimetype,
-      imageBase64: encode_image,
+      filename: fileURL
     };
     const newImage = new imageSchema(finalImg);
 
@@ -223,6 +222,7 @@ module.exports = {
       if (!result) {
         throw createError(404, "Karya does not exist.");
       }
+      deleteImages(result.filename,"string")
       res.send(result);
     } catch (error) {
       console.log(error.message);

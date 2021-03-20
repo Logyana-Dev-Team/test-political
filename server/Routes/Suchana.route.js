@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const SuchanaController = require('../Controllers/Suchana.Controller');
+const auth = require('../Controllers/auth.conroller');
 
 //Get a list of all Suchanas
 router.get('/', SuchanaController.getAllSuchanas);

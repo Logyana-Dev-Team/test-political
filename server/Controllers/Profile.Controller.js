@@ -18,20 +18,16 @@ module.exports = {
 
   createNewProfile: async (req, res, next) => {
     try {
-      const file = req.file;
-      if(!file){
-          const error = new Error('Please choose file');
-          error.httpStatusCode = 400;
-          return next(error)
-      }
+      const fileURL=req.body.fileURL
+      // // const file = req.file;
+      // if(!file){
+      //     const error = new Error('Please choose file');
+      //     error.httpStatusCode = 400;
+      //     return next(error)
+      // }
 
-      let img = fs.readFileSync(file.path);
-
-      let encode_image = img.toString("base64");
       let finalImg = {
-        filename: file.originalname,
-        contentType: file.mimetype,
-        imageBase64: encode_image,
+        filename: fileURL,
       };
       // const profile = new Profile(finalImg);
 

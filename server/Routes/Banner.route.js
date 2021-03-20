@@ -8,7 +8,7 @@ const BannerController = require('../Controllers/Banner.Controller');
 router.get('/', BannerController.getAllBanners);
 
 //Create a new Banner
-router.post('/:id', store.single('images'),BannerController.createNewBanner);
+router.post('/:id', BannerController.createNewBanner);
 
 //Get a Banner by id
 router.get('/:id', BannerController.findBannerById);

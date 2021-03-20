@@ -16,6 +16,7 @@ import EditModal from "../../reusable/EditModal";
 
 import axios from "axios";
 import { toast } from "react-toastify";
+import { authAxiosAdmin } from "src/App";
 
 Modal.setAppElement("#root");
 
@@ -42,7 +43,7 @@ const Sampark = () => {
         console.log(res);
         setAllSampark(res.data);
       })
-      .catch((err) => console.log(err));
+      .catch((err) =>console.log(err));
   }, []);
   const [itemId, setItemId] = useState();
 

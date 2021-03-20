@@ -18,6 +18,7 @@ import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { icons } from "src/assets/icons";
+import { authAxiosAdmin } from "src/App";
 
 Modal.setAppElement("#root");
 const Suchana = () => {
@@ -94,50 +95,74 @@ const Suchana = () => {
     //   window.location.reload();
     // }, 2000);
   };
-  const addImage = () => {
-    const inputFile = document.getElementById("image");
+
+  const addImage = async (e) => {
     let formData = new FormData();
-    formData.append("images", inputFile.files[0]);
+    formData.append("file", e.target.files[0]);
+    formData.append("upload_preset", "logyanasolutions");
+    const res = await fetch(
+      "https://api.cloudinary.com/v1_1/logyana/image/upload",
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+    const file = await res.json();
+    // console.log(file);
+    let obj = {
+      fileURL: file.secure_url,
+    };
     // for (var value of formdata.entries()) {
     //   console.log(value);
     // }
     // console.log(id);
     axios
-      .post(`/images`, formData)
+      .post(`/images`, obj)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         setLoading(false);
         toast.success("Image added !!");
       })
       .catch((err) => console.log(err));
-
-    // setDeleteModal(!deleteModal);
-    // setTimeout(() => {
-    //   window.location.reload();
-    // }, 2000);
+    setDeleteModal(!deleteModal);
+    setTimeout(() => {
+      window.location.reload();
+    }, 2000);
   };
 
-  const addNews = () => {
-    const inputFile = document.getElementById("news");
+  const addNews = async (e) => {
     let formData = new FormData();
-    formData.append("images", inputFile.files[0]);
+    formData.append("file", e.target.files[0]);
+    formData.append("upload_preset", "logyanasolutions");
+    const res = await fetch(
+      "https://api.cloudinary.com/v1_1/logyana/image/upload",
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+    const file = await res.json();
+    // console.log(file);
+    let obj = {
+      fileURL: file.secure_url,
+    };
     // for (var value of formdata.entries()) {
     //   console.log(value);
     // }
     // console.log(id);
     axios
-      .post(`/news`, formData)
+      .post(`/news`, obj)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         setLoading1(false);
         toast.success("News added !!");
       })
       .catch((err) => console.log(err));
 
-    // setDeleteModal(!deleteModal);
-    // setTimeout(() => {
-    //   window.location.reload();
-    // }, 2000);
+    setDeleteModal(!deleteModal);
+    setTimeout(() => {
+      window.location.reload();
+    }, 2000);
   };
   const addVideo = () => {
     const inputFile = document.getElementById("videos");
@@ -158,9 +183,9 @@ const Suchana = () => {
       })
       .catch((err) => console.log(err));
 
-    // setTimeout(() => {
-    //   window.location.reload();
-    // }, 2000);
+    setTimeout(() => {
+      window.location.reload();
+    }, 2000);
   };
   useEffect(() => {
     axios
@@ -186,15 +211,6 @@ const Suchana = () => {
       .catch((err) => console.log(err));
   }, []);
 
-  //   const [state, setState] = useState(false);
-
-  //   function openModal() {
-  //     setState(true);
-  //   }
-
-  //   function closeModal() {
-  //     setState(false);
-  //   }
 
   return (
     <>
@@ -217,13 +233,19 @@ const Suchana = () => {
             <h3 className="font-weight-bolder">चित्रे</h3>
           </div>
           <div className="col-sm-8 text-black ">
-            <input type="file" className="mt-3" id="image" name="image" />
+            <input
+              type="file"
+              className="mt-3"
+              id="image"
+              name="image"
+              onChange={(e) => addImage(e)}
+            />
             {/* <button
               className="btn btn-success mx-2"
               type="submit"
               onClick={() => {}}
             ></button> */}
-            <button
+            {/* <button
               className="btn btn-behance m-2"
               type="button"
               onClick={() => {
@@ -242,7 +264,7 @@ const Suchana = () => {
                   नवीन चित्र
                 </>
               )}
-            </button>
+            </button> */}
           </div>
 
           {allImages.map((item) => {
@@ -276,8 +298,8 @@ const Suchana = () => {
                     </div>
                     <div>
                       <img
-                        src={`data:${item.contentType};base64,${item.imageBase64}`}
-                        alt="sourceImage"
+                        src={item.filename}
+                        alt={item.filename}
                         style={{
                           width: "250px",
                           height: "150px",
@@ -298,9 +320,9 @@ const Suchana = () => {
             <h3 className="font-weight-bolder">बातम्या</h3>
           </div>
           <div className="col-sm-8 text-black ">
-            <input type="file" className="mt-3" id="news" name="news" />
+            <input type="file" className="mt-3" id="news" name="news"  onChange={(e) => addNews(e)}/>
 
-            <button
+            {/* <button
               className="btn btn-behance m-2"
               type="button"
               onClick={() => {
@@ -319,7 +341,7 @@ const Suchana = () => {
                   नवीन बातमी
                 </>
               )}
-            </button>
+            </button> */}
             {/* <button
               className="btn btn-behance m-2"
               type="button"
@@ -363,8 +385,8 @@ const Suchana = () => {
                     </div>
                     <div>
                       <img
-                        src={`data:${item.contentType};base64,${item.imageBase64}`}
-                        alt="sourceImage"
+                        src={item.filename}
+                        alt={item.filename}
                         style={{
                           width: "250px",
                           height: "150px",

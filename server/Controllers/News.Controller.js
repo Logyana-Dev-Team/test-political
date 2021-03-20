@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const News = require("../Models/News.model");
 
 const fs = require("fs");
+const { deleteImages } = require("./Images.Controller");
 
 module.exports = {
   getAllNewss: async (req, res, next) => {
@@ -16,21 +17,12 @@ module.exports = {
   },
 
   createNewNews: async (req, res, next) => {
-    const file = req.file;
-    if (!file) {
-      const error = new Error("Please choose file");
-      error.httpStatusCode = 400;
-      return next(error);
-    }
+    const {fileURL}=req.body;
 
-    let img = fs.readFileSync(file.path);
-
-    let encode_image = img.toString("base64");
     let finalImg = {
-      filename: file.originalname,
-      contentType: file.mimetype,
-      imageBase64: encode_image,
+      filename: fileURL,
     };
+
     const news = new News(finalImg);
 
     news
@@ -152,10 +144,13 @@ module.exports = {
     const id = req.params.id;
     try {
       const result = await News.findByIdAndDelete(id);
+      // console.log('DATA')
+      // console.log(result.filename)
       // console.log(result);
       if (!result) {
         throw createError(404, "News does not exist.");
       }
+      deleteImages(result.filename,"string")
       res.send(result);
     } catch (error) {
       console.log(error.message);

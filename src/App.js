@@ -23,7 +23,7 @@ const Page500 = React.lazy(() => import('./views/pages/page500/Page500'));
 const token = localStorage.getItem("token")
 
 export const authAxiosAdmin = axios.create({
-  baseURL: "http://localhost:5000/",
+  baseURL: "http://localhost:5001/",
   headers: {
     Authorization: `Bearer ${token}`,
   },
@@ -36,7 +36,7 @@ class App extends Component {
           <React.Suspense fallback={loading}>
           <ToastContainer/>
             <Switch>
-              <Route exact path="/login" name="Login Page" render={props => <Login {...props}/>} />
+              {/* <Route exact path="/login" name="Login Page" render={props => <Login {...props}/>} /> */}
               {/* 
               <Route exact path="/register" name="Register Page" render={props => <Register {...props}/>} />
               <Route exact path="/404" name="Page 404" render={props => <Page404 {...props}/>} />

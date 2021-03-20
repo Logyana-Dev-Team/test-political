@@ -76,13 +76,13 @@ const TheHeader = () => {
         <CLink className="c-subheader-nav-link" href="#" style={{    position: "absolute",
     right: "20px"}}>
               {/* <CIcon name="cil-settings" alt="Settings" />&nbsp;Settings */}
-              <CButton
+              {/* <CButton
                           color="primary"
                           onClick={() => onLogout()}
                           className="px-4"
                         >
                           Log Out
-                        </CButton>
+                        </CButton> */}
             </CLink>
       </CHeaderNav>
 

@@ -18,7 +18,7 @@ import EditModal from "./EditModal";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-function KaryaListCard({ title, link, desc, id, images }) {
+function KaryaListCard({ title, link, desc, id, images,videolink }) {
   const [viewModal, setViewModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
@@ -107,7 +107,7 @@ function KaryaListCard({ title, link, desc, id, images }) {
         </CModalHeader>
         <CModalBody>
           {/* Modal Code */}
-          <ViewModal title={title} desc={desc} link={link} images={images} id={id} />
+          <ViewModal title={title} desc={desc} link={link} images={images} id={id} videolink={videolink} />
         </CModalBody>
         <CModalFooter>
           <CButton color="success" onClick={() => setViewModal(!viewModal)}>

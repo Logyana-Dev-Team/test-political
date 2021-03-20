@@ -17,6 +17,7 @@ import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 // import EditModal from "./EditModal";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { authAxiosAdmin } from "src/App";
 
 Modal.setAppElement("#root");
 
@@ -24,27 +25,82 @@ Modal.setAppElement("#root");
 
 const Karya = () => {
   const [loading, setLoading] = useState(false);
+  const [loading2, setLoading2] = useState(false);
+  const [optionSelected, setoptionSelected] = useState("video");
+  const [action, setaction] = useState("video");
+  const [videolinkValue, setvideolinkValue] = useState("");
+
   const { register, handleSubmit, reset } = useForm();
   const [editModal, setEditModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
   const [allKaryas, setAllKaryas] = useState([]);
 
-  const onSubmit = (data, event) => {
+  const addVideo = () => {
+    // const inputFile = document.getElementById("videos");
+    // let formData = new FormData();
+    // formData.append("link", inputFile.value);
+    // for (var value of formData.entries()) {
+    //   console.log(value);
+    // }
+    // console.log(id);
+    // axios
+    //   .post(`/videos`, {
+    //     link: inputFile.value,
+    //   })
+    //   .then((res) => {
+    //     setLoading2(false);
+    //     console.log(res);
+    //     toast.success("Video added !!");
+    //   })
+    //   .catch((err) => console.log(err));
+
+    // setTimeout(() => {
+    //   window.location.reload();
+    // }, 2000);
+  };
+  let fileArray = [];
+
+  const onSubmit = async (data, event) => {
     event.preventDefault();
-    const inpFile = document.getElementById("inpFile");
-    let formData = new FormData();
+    let isNull = document.getElementById("inpFile");
+    // let videolink = document.getElementById("videolink") || "" ;
+// console.log(videolink);
+    if(videolinkValue === ""){
+    const inpFile = isNull.files;
 
-    formData.append("title", data.title);
-    formData.append("desc", data.desc);
-    formData.append("link", data.link);
-
-    for (const file of inpFile.files) {
-      formData.append("images", file);
-    }
-    // e.preventDefault();
-    console.log(data); // sent object
+    let imgFormData = new FormData();
+    if (inpFile) {
+      for (const f of inpFile) {
+        imgFormData.append("file", f);
+        imgFormData.append("upload_preset", "logyanasolutions");
+        const res = await fetch(
+          "https://api.cloudinary.com/v1_1/logyana/image/upload",
+          {
+            method: "POST",
+            body: imgFormData,
+          }
+        );
+        const file = await res.json();
+        console.log(file);
+        let obj = {
+          fileURL: file.secure_url,
+        };
+        fileArray.push(obj);
+      }
+     console.log(fileArray);
+    } // formData.append("fileArray", fileArray);
+}
+    let dataObject = {
+      title: data.title,
+      desc: data.desc,
+      link: data.link,
+      fileArray: fileArray,
+      videolink: videolinkValue,
+      action: optionSelected,
+    };
+    console.log(dataObject); // sent object
     axios
-      .post("/karya", formData)
+      .post("/karya", dataObject)
       .then((response) => {
         setLoading(false);
         console.log(response.data);
@@ -52,14 +108,14 @@ const Karya = () => {
         closeModal();
         toast.success("Karya added successfully !!");
         setTimeout(() => {
-          window.location.reload()
-          }, 2000);
+          window.location.reload();
+        }, 2000);
       })
       .catch((error) => {
         console.log(error);
         // reset({});
         closeModal();
-        toast.danger("Failed !!");
+        // toast.danger("Failed !!");
         // setTimeout(() => {
         //   window.location.reload()
         //   }, 2000);
@@ -185,6 +241,7 @@ const Karya = () => {
                   placeholder="Write here"
                 />
               </div>
+
               <div className="form-group my-4" style={{ margin: "10px" }}>
                 <label
                   for="impFile"
@@ -194,22 +251,125 @@ const Karya = () => {
                     paddingVertical: "15px",
                     marginRight: "2rem",
                   }}
-                >
-                  चित्र निवडा
-                </label>
-                <input
-                  type="file"
-                  id="inpFile"
-                  name="inpFile"
-                  placeholder="Choose Image"
-                  multiple
-                  ref={register}
-                />
-                <p>
-                  (Total file size should be less than 400KB and in .jpg,.jpeg
-                  format)
-                </p>
+                ></label>
+                <div className="form-group my-4" style={{ margin: "10px" }}>
+                  <input
+                    type="radio"
+                    id="selectOption"
+                    name="selectOption"
+                    value={optionSelected}
+                    onChange={() => setoptionSelected("Image")}
+                  />
+                  <label
+                    for="impFile"
+                    style={{
+                      color: "black",
+                      fontWeight: "bold",
+                      paddingVertical: "15px",
+                      marginRight: "2rem",
+                    }}
+                  >
+                    Images
+                  </label>
+                </div>
+                <div className="form-group my-4" style={{ margin: "10px" }}>
+                  <input
+                    type="radio"
+                    id="selectOption"
+                    name="selectOption"
+                    value={optionSelected}
+                    onChange={() => setoptionSelected("Video")}
+                  />
+                  <label
+                    for="impFile"
+                    style={{
+                      color: "black",
+                      fontWeight: "bold",
+                      paddingVertical: "15px",
+                      marginRight: "2rem",
+                    }}
+                  >
+                    Video
+                  </label>
+                </div>
               </div>
+
+              {optionSelected == "Image" ? (
+                <div className="form-group my-4" style={{ margin: "10px" }}>
+                  <label
+                    for="impFile"
+                    style={{
+                      color: "black",
+                      fontWeight: "bold",
+                      paddingVertical: "15px",
+                      marginRight: "2rem",
+                    }}
+                  >
+                    चित्र निवडा
+                  </label>
+                  <input
+                    type="file"
+                    id="inpFile"
+                    name="inpFile"
+                    placeholder="Choose Image"
+                    multiple
+                    ref={register}
+                  />
+                  <p>
+                    (Total file size should be less than 400KB and in .jpg,.jpeg
+                    format)
+                  </p>
+                </div>
+              ) : (
+                <div className="col  ">
+                  <div className="col-sm-4 my-3 ">
+                    <h6 className="font-weight-bolder">व्हिडिओ</h6>
+                  </div>
+                  <div className="col-sm-8 text-black ">
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="videolink"
+                      name="videolink"
+                      value={videolinkValue}
+                      onChange={e=>setvideolinkValue(e.target.value)}
+                    />
+                    {/* <button
+                      className="btn btn-behance m-2"
+                      type="button"
+                      onClick={() => {
+                        setLoading2(true);
+                        addVideo();
+                      }}
+                    >
+                      {loading2 ? (
+                        <div className="spinner-border fast" role="status">
+                          <span className="sr-only">Loading...</span>
+                        </div>
+                      ) : (
+                        <>
+                          {" "}
+                          <FontAwesomeIcon
+                            icon={faPlusCircle}
+                            className="mr-1"
+                          />
+                          नवीन व्हिडिओ
+                        </>
+                      )}
+                    </button> */}
+                    {/* <button
+                    className="btn btn-behance m-2"
+                    type="button"
+                    onClick={() => {
+                      addVideo();
+                    }}
+                  >
+                    <FontAwesomeIcon icon={faPlusCircle} className="mr-1" />
+                    नवीन Video
+                  </button> */}
+                  </div>
+                </div>
+              )}
               <div className="d-flex justify-content-end  my-4 ">
                 <button
                   className="btn btn-success mx-2"
@@ -218,11 +378,13 @@ const Karya = () => {
                     setLoading(true);
                   }}
                 >
-                 { loading ? (
-                  <div className="spinner-border fast" role="status">
-                  <span className="sr-only">Loading...</span>
-                </div>
-                  ) : <>कार्य टाका</>}
+                  {loading ? (
+                    <div className="spinner-border fast" role="status">
+                      <span className="sr-only">Loading...</span>
+                    </div>
+                  ) : (
+                    <>कार्य टाका</>
+                  )}
                 </button>
                 <button
                   className="btn btn-danger mx-2"
@@ -255,6 +417,7 @@ const Karya = () => {
                         link={item.link}
                         preloaded={item}
                         images={item.images}
+                        videolink={item.videolink}
                       />
                     </div>
                   );

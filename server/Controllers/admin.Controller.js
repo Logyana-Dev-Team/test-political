@@ -20,7 +20,7 @@ exports.adminLogin = (req, res) => {
         if (password === doc[0].password) {
           //create token
           const role = "admin";
-          const time = 10;
+          const time = 60*60;
           // const time = 60;
           const jwt = new jwttoken();
           const token = jwt.createToken(email,role, time);

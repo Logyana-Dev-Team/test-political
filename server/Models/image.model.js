@@ -8,14 +8,14 @@ const ImageSchema = new Schema(
       // unique : true,
       required: true,
     },
-    contentType: {
-      type: String,
-      required: true,
-    },
-    imageBase64: {
-      type: String,
-      required: true,
-    },
+    // contentType: {
+    //   type: String,
+    //   required: true,
+    // },
+    // imageBase64: {
+    //   type: String,
+    //   required: true,
+    // },
   },
   { timestamps: true }
 );

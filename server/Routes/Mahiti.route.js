@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const MahitiController = require('../Controllers/Mahiti.Controller');
+const auth = require('../Controllers/auth.conroller');
 
 //Get a list of all Mahitis
 router.get('/', MahitiController.getAllMahitis);

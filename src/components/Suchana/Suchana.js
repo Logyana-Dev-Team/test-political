@@ -17,6 +17,7 @@ import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 // import EditModal from "./EditModal";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { authAxiosAdmin } from "src/App";
 
 Modal.setAppElement("#root");
 

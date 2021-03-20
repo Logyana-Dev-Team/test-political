@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const SamparkController = require('../Controllers/Sampark.Controller');
+const auth = require('../Controllers/auth.conroller');
 
 //Get a list of all Samparks
 router.get('/', SamparkController.getAllSamparks);

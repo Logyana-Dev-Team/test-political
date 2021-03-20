@@ -3,6 +3,7 @@ const router = express.Router();
 const store = require('./multer')
 
 const NewsController = require('../Controllers/News.Controller');
+const auth = require('../Controllers/auth.conroller');
 
 //Get a list of all Newss
 router.get('/', NewsController.getAllNewss);

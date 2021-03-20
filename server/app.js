@@ -18,7 +18,7 @@ app.use(cors())
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(logger('dev'));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'uploads')));
 
 app.use(
   session({
@@ -116,14 +116,17 @@ passport.deserializeUser(function (id, done) {
   });
 });
 
-app.post("/register", function (req, res) {
+app.post("/register",async function (req, res) {
   const Name = req.body.name;
   const Dob = req.body.dob;
   // const Email = req.body.email
   const Mobile = req.body.mobile
   const Address = req.body.address
   // const Ward = req.body.ward
-
+  const result = await User.findOne({mobile:req.body.mobile});
+  if(result){
+    res.status(200).json({message:"User Already exist"});
+}
 
   User.register(
     {
@@ -141,6 +144,7 @@ app.post("/register", function (req, res) {
         console.log(err);
       } else {
         res.send(user)
+        console.log("Successfull ");
         res.redirect(req.get("referer"));
       }
     }

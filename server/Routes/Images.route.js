@@ -3,12 +3,13 @@ const router = express.Router();
 const store = require('./multer')
 
 const ImagesController = require('../Controllers/Images.Controller');
+const auth = require('../Controllers/auth.conroller');
 
 //Get a list of all Imagess
 router.get('/', ImagesController.getAllImagess);
 
 //Create a new Images
-router.post('/', store.single('images') ,ImagesController.createNewImages);
+router.post('/',ImagesController.createNewImages);
 
 
 //Get a Images by id

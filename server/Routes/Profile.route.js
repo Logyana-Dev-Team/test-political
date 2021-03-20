@@ -8,7 +8,7 @@ const ProfileController = require('../Controllers/Profile.Controller');
 router.get('/', ProfileController.getAllProfiles);
 
 //Create a new Profile
-router.post('/:id', store.single('images') ,ProfileController.createNewProfile);
+router.post('/:id',ProfileController.createNewProfile);
 
 //Get a Profile by id
 router.get('/:id', ProfileController.findProfileById);

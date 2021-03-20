@@ -5,6 +5,7 @@ const Banner = require('../Models/Banner.model');
 // const imageSchema = require('../Models/image.model');
 
 const fs = require('fs');
+const { deleteImages } = require('./Images.Controller');
 
 module.exports = {
   getAllBanners: async (req, res, next) => {
@@ -18,20 +19,16 @@ module.exports = {
 
   createNewBanner: async (req, res, next) => {
     try {
-      const file = req.file;
-      if(!file){
-          const error = new Error('Please choose file');
-          error.httpStatusCode = 400;
-          return next(error)
-      }
+      // const file = req.file;
+      // if(!file){
+      //     const error = new Error('Please choose file');
+      //     error.httpStatusCode = 400;
+      //     return next(error)
+      // }
+      const fileURL=req.body.fileURL
 
-      let img = fs.readFileSync(file.path);
-
-      let encode_image = img.toString("base64");
       let finalImg = {
-        filename: file.originalname,
-        contentType: file.mimetype,
-        imageBase64: encode_image,
+        filename: fileURL
       };
       /*
        const banner = new Banner(finalImg); 
@@ -111,6 +108,7 @@ module.exports = {
         throw createError(404, 'Banner does not exist.');
       }
       res.send(result);
+      deleteImages(result.filename,"string")
     } catch (error) {
       console.log(error.message);
       if (error instanceof mongoose.CastError) {

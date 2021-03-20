@@ -3,6 +3,7 @@ const router = express.Router();
 
 const store = require('./multer')
 const TakrarController = require('../Controllers/Takrar.Controller');
+const auth = require('../Controllers/auth.conroller');
 
 //Get a list of all Takrars
 router.get('/', TakrarController.getAllTakrars);
