@@ -14,7 +14,7 @@ import store from './store'
 
 import axios from 'axios';
 
-axios.defaults.baseURL="http://localhost:5001/";
+axios.defaults.baseURL="http://nikhilbhagat.in/";
 
 React.icons = icons
 

@@ -1,130 +1,130 @@
-import React, { useState, useEffect } from "react";
-import "../../css/main.css";
-import { NavLink } from "react-router-dom";
-import{ useForm }from 'react-hook-form';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import {
+  CButton,
+  CCard,
+  CCardBody,
+  CCardGroup,
+  CCol,
+  CContainer,
+  CForm,
+  CInput,
+  CInputGroup,
+  CInputGroupPrepend,
+  CInputGroupText,
+  CRow,
+} from "@coreui/react";
+import CIcon from "@coreui/icons-react";
 import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye } from "@fortawesome/free-solid-svg-icons";
+const Login = () => {
+  const [toggle, setToggle] = useState(false);
 
-//check whole code ...needs a lot of changes
-const UserLogin = () => {
-  const {register, handleSubmit, errors}=useForm();
-  const initialState = localStorage.getItem("token");
-  const [custToken, setCustToken] = useState(initialState);
-  const [user, setUser] = useState({
-    password: "",
-    email: "",
-  });
-
-  // useEffect(() => {
-  //   if (custToken) window.location = "/";
-  // }, [custToken]);
-
-  // const inputEvent = (e) => {
-  //   const { name, value } = e.target;
-
-  //   setUser((preValue) => {
-  //     return {
-  //       ...preValue,
-  //       [name]: value,
-  //     };
-  //   });
-  // };
-
-  const onSubmit = (user) => {
-    // e.preventDefault();
-    // console.log(user); // sent object
-    // axios
-    //   .post("/users/login", {
-    //     email: user.email,
-    //     password: user.password,
-    //   })
-    //   .then((response) => {
-    //     // console.log(response.data);
-    //     // console.log(response.data.token);
-    //     localStorage.setItem("token", response.data.token);
-    //     localStorage.setItem("userId", response.data.userId);
-    //     // setCustToken(response.data);
-    //     window.location = "/";
-    //   })
-    //   .catch((error) => {
-    //    alert("wrong email or password")
-    //     console.log(error);
-    //   });
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const onsubmit = () => {
+    // console.log(email, password);
+    axios
+      .post("/admin/login", {
+        email,
+        password,
+      })
+      .then((res) => {
+        localStorage.setItem("userId", res.data.userId);
+        localStorage.setItem("token", res.data.token);
+        console.log(res.data)
+        window.location='/';
+      })
+      .catch((err) => {
+      alert('Wrong username or password')}
+      );
   };
 
   return (
-    <>
-      <div className="container-fluid">
-        <div className="row no-gutter">
-          <div className="d-none d-md-flex col-md-4 col-lg-6 bg-image"></div>
-          <div className="col-md-8 col-lg-6">
-            <div className="login d-flex align-items-center py-5">
-              <div className="container">
-                <div className="row">
-                  <div className="col-md-9 col-lg-8 mx-auto">
-                    <h3 className="login-heading mb-4">
-                      Welcome to Travelgram
-                    </h3>
-                    <form onSubmit={handleSubmit(onSubmit)} autoComplete="on">
-                      <div className="form-label-group">
-                        <input
-                          type="email"
-                          name="email"
-                          className="form-control"
-                          placeholder="Enter Your EmailID"
-                          ref={register({required:true}) }
-                          // onChange={inputEvent}
-                          // value={user.email}
-                          autoFocus
-                        />
-                        {errors.email && <p style={{color:"red", fontSize:"small"}}>This Field is required</p>}
-                      </div>
-
-                      <div className="form-label-group">
-                        <input
-                          type="password"
-                          name="password"
-                          className="form-control"
-                          placeholder="Enter Your password"
-                          ref={register({required:true})}
-                          // onChange={inputEvent}
-                          // value={user.password}
-                        />
-                         {errors.password &&<p style={{color:"red", fontSize:"small"}}>This field is required</p>}
-                      </div>
-
-                     
-                      <button
-                        className="btn btn-lg btn-primary btn-block btn-login text-uppercase font-weight-bold mb-2"
-                        type="submit"
-                      >
-                        LOGIN
-                      </button>
-                      <div className="text-center">
-                       
-
-                        <NavLink
-                          exact
-                          to="usersignup"
-                          className="text-decoration-none"
+    <div className="c-app c-default-layout flex-row align-items-center">
+      <CContainer>
+        <CRow className="justify-content-center">
+          <CCol md="8">
+            <CCardGroup>
+              <CCard className="p-4">
+                <CCardBody>
+                  <CForm>
+                    <h1>Login Admin</h1>
+                    {/* <p className="text-muted">Sign In to your account</p> */}
+                    <CInputGroup className="mb-3">
+                      <CInputGroupPrepend>
+                        <CInputGroupText>
+                          <CIcon name="cil-user" />
+                        </CInputGroupText>
+                      </CInputGroupPrepend>
+                      <CInput
+                        type="text"
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="Username"
+                        autoComplete="username"
+                      />
+                    </CInputGroup>
+                    <CInputGroup className="mb-4">
+                      <CInputGroupPrepend>
+                        <CInputGroupText>
+                          <CIcon name="cil-lock-locked" />
+                        </CInputGroupText>
+                      </CInputGroupPrepend>
+                      <CInput
+                        type= {toggle ? "text":"password"}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="Password"
+                        autoComplete="current-password"
+                      />
+                     <CInputGroupPrepend>
+                        <CInputGroupText>
+                        <FontAwesomeIcon
+                      icon={faEye}
+                      className=" hoverr-icon-view mx-1"
+                      onClick={() => setToggle(!toggle)}
+                    />
+                        </CInputGroupText>
+                      </CInputGroupPrepend>
+                    </CInputGroup>
+                    <CRow>
+                      <CCol xs="6">
+                        {/* <Link to="/"> */}
+                        <CButton
+                          color="primary"
+                          onClick={() => onsubmit()}
+                          className="px-4"
                         >
-                          <button
-                            className="btn btn-lg  mt-5 btn-warning btn-block btn-login text-uppercase font-weight-bold mb-2"
-                            type="button"
-                          >
-                            Register
-                          </button>
-                        </NavLink>
-                      </div>
-                    </form>
+                          Login
+                        </CButton>
+                        {/* </Link> */}
+                      </CCol>
+
+                      {/* <CCol xs="6" className="text-right">
+                        <CButton color="link" className="px-0">Forgot password?</CButton>
+                      </CCol> */}
+                    </CRow>
+                  </CForm>
+                </CCardBody>
+              </CCard>
+              {/* <CCard className="text-white bg-primary py-5 d-md-down-none" style={{ width: '44%' }}>
+                <CCardBody className="text-center">
+                  <div>
+                    <h2>Sign up</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+                      labore et dolore magna aliqua.</p>
+                    <Link to="/register">
+                      <CButton color="primary" className="mt-3" active tabIndex={-1}>Register Now!</CButton>
+                    </Link>
                   </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </>
+                </CCardBody>
+              </CCard> */}
+            </CCardGroup>
+          </CCol>
+        </CRow>
+      </CContainer>
+    </div>
   );
 };
 
-export default UserLogin;
+export default Login;

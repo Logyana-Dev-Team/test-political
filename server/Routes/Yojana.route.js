@@ -5,7 +5,7 @@ const YojanaController = require('../Controllers/Yojana.Controller');
 const auth = require('../Controllers/auth.conroller');
 
 //Get a list of all yojanas
-router.get('/', YojanaController.getAllYojanas);
+router.get('/',auth, YojanaController.getAllYojanas);
 
 //Create a new yojana
 router.post('/', YojanaController.createNewYojana);

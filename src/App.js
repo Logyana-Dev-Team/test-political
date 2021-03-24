@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { HashRouter, Route, Switch } from 'react-router-dom';
 import './scss/style.scss';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -16,14 +16,14 @@ const loading = (
 const TheLayout = React.lazy(() => import('./containers/TheLayout'));
 
 // Pages
-const Login = React.lazy(() => import('./views/pages/login/Login'));
+const Login = React.lazy(() => import('./components/AdminLogin/Login.js'));
 const Register = React.lazy(() => import('./views/pages/register/Register'));
 const Page404 = React.lazy(() => import('./views/pages/page404/Page404'));
 const Page500 = React.lazy(() => import('./views/pages/page500/Page500'));
 const token = localStorage.getItem("token")
 
 export const authAxiosAdmin = axios.create({
-  baseURL: "http://localhost:5001/",
+  baseURL: "http://nikhilbhagat.in/",
   headers: {
     Authorization: `Bearer ${token}`,
   },
@@ -32,11 +32,13 @@ class App extends Component {
  
   render() {
     return (
-      <BrowserRouter >
+      <HashRouter>
           <React.Suspense fallback={loading}>
           <ToastContainer/>
             <Switch>
-              {/* <Route exact path="/login" name="Login Page" render={props => <Login {...props}/>} /> */}
+            {/* <Redirect from="/" to="/login" /> */}
+
+              <Route exact path="/login" name="Login Page" render={props => <Login {...props}/>} />
               {/* 
               <Route exact path="/register" name="Register Page" render={props => <Register {...props}/>} />
               <Route exact path="/404" name="Page 404" render={props => <Page404 {...props}/>} />
@@ -44,7 +46,7 @@ class App extends Component {
               <Route  path="/" name="Home" render={props => <TheLayout {...props}/>} />
             </Switch>
           </React.Suspense>
-      </BrowserRouter>
+      </HashRouter>
     );
   }
 }

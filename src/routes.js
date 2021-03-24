@@ -1,5 +1,5 @@
 import React from 'react';
-const Login = React.lazy(() => import('./views/pages/login/Login'));
+const Login = React.lazy(() => import('./components/AdminLogin/Login.js'));
 
 
 const Toaster = React.lazy(() => import('./views/notifications/toaster/Toaster'));
@@ -37,7 +37,6 @@ const Colors = React.lazy(() => import('./views/Colors'));
 const Typography = React.lazy(() => import('./views/Typography'));
 const Widgets = React.lazy(() => import('./views/widgets/Widgets'));
 const Users = React.lazy(() => import('./components/Users/Users.js'));
-
 
 const Suchana = React.lazy(() => import('./components/Suchana/Suchana'));
 const Yojana = React.lazy(() => import('./components/Yojana/Yojana'));
